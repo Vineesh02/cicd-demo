@@ -26,3 +26,18 @@ def test_read_item():
     assert data["item_id"] == 123
     assert "CI/CD demo item" in data["message"]
 
+
+def test_list_items():
+    response = client.get("/api/items")
+    assert response.status_code == 200
+    data = response.json()
+    assert isinstance(data, list)
+    assert len(data) >= 2
+
+
+def test_create_item():
+    response = client.post("/api/items", json={"name": "New item"})
+    assert response.status_code == 200
+    data = response.json()
+    assert data["id"] >= 3
+    assert data["name"] == "New item"
